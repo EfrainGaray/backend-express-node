@@ -14,7 +14,8 @@ const userSchema = new Schema({
     email: {type: String, unique:true,required: [true, 'El email Es obligatorio']},
     password: {type: String, required: [true, 'El password Es obligatorio']},
     img: {type: String, required: false},
-    role: {type: String, required: true, default: 'USER_ROLE', enum: rolesValid}
+    role: {type: String, required: true, default: 'USER_ROLE', enum: rolesValid},
+    google: {type: Boolean, default: false}
 });
 userSchema.plugin(uniqueValidator,{message:'El {PATH} debe Ser unico'});
 module.exports = mongoose.model('User',userSchema);
