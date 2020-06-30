@@ -7,7 +7,7 @@ const app = express();
 const User = require('../models/user');
 
 app.post('/', (req,res,next) => {
-    var body = req.body;
+    const body = req.body;
     User.findOne({email:body.email},(errors, user)=>{
         if (errors){
             return res.status(500).json({

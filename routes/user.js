@@ -6,8 +6,14 @@ const mdAuth = require('../middlewares/auth');
 const  User = require('../models/user');
 
 app.get('/', (req,res,next) => {
-    User.find({ },'name email img role').
-        exec( (errors, users)=>{
+
+    let offset = req.query.offset || 0;
+    offset = Number(offset);
+
+    User.find({ },'name email img role')
+        .skip(offset)
+        .limit(5)
+        .exec( (errors, users)=>{
             if (errors){
                 return  res.status(500).json({
                     ok:false,
@@ -15,10 +21,22 @@ app.get('/', (req,res,next) => {
                     errors
                 })
             }
-            res.status(200).json({
-                ok:true,
-                users
+
+            User.count({},(errors,count)=>{
+                if (errors){
+                    return  res.status(500).json({
+                        ok:false,
+                        message:'Error base de datos',
+                        errors
+                    })
+                }
+                res.status(200).json({
+                    ok:true,
+                    users,
+                    count
+                })
             })
+
     });
 
 });
